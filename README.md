@@ -23,7 +23,7 @@ sudo bash installsetup.bash
 ## Step 6
 ### Login in to mysql 
 `mysql -uroot -p
-#Enter mysql password
+# Enter mysql password
 show databases;
 drop database openmrs;
 exit`
