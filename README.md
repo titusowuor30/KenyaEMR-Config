@@ -12,9 +12,9 @@
 ## Step 4
 ### open terminal in the kenyaEMR folder and run install script
 `shell
-sudo bash installsetup.bash
+sudo bash installsetup.bash`
 #enter machine password
-`
+
 
 ## Step 5
 ### Once the script has finishished run set up script i.e
@@ -23,8 +23,8 @@ sudo bash installsetup.bash
 ## Step 6
 ### Login in to mysql 
 `mysql -uroot -p
-# Enter mysql password
-show databases;
+### Enter mysql password
+`show databases;
 drop database openmrs;
 exit`
 
@@ -35,13 +35,13 @@ exit`
 
 ## Step 7
 ### Login in to mysql 
-`mysql -uroot -p
-//Enter mysql password
-use openmrs; 
+`mysql -uroot -p`
+### Enter mysql password
+`use openmrs; 
 grant all privileges on *.* to 'openmrs_user'@'localhost';
-flush privileges;
-//Delete from liquabaselog (This is an option step if you are switching between platforms)
-source db.sql (db.sql represents the database you want to import in this case the facility database)
+flush privileges;`
+### Delete from liquabaselog (This is an option step if you are switching between platforms)
+`source db.sql (db.sql represents the database you want to import in this case the facility database)
 exit`
 
 ### Restart tomact service by typing
