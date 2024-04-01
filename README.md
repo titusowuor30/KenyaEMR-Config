@@ -1,3 +1,125 @@
+#KENYAEMR SOP
+## KENYAEMR INSTALLATION	
+## Step 1
+### Install UBUNTU 20.0.4
+
+## Step 2
+### copy kenyaemr 18 folder to home
+
+## Step 3
+### open folder db inside the kenyaemr folder, delete the openmrs.sql and replace it with your db and rename it to openmrs.sql
+
+## Step 4
+### open terminal in the kenyaEMR folder and run install script
+`shell
+sudo bash installsetup.bash
+#enter machine password
+`
+
+## Step 5
+### Once the script has finishished run set up script i.e
+`sh setup_script.sh`
+
+## Step 6
+### Login in to mysql 
+`mysql -uroot -p
+#Enter mysql password
+show databases;
+drop database openmrs;
+exit`
+
+### go to browser and type localhost:8080/openmrs/ 
+### Follow the standard installation steps for simple installation
+### when the process is finished
+### log in to kenyaemr
+
+## Step 7
+### Login in to mysql 
+`mysql -uroot -p
+//Enter mysql password
+use openmrs; 
+grant all privileges on *.* to 'openmrs_user'@'localhost';
+flush privileges;
+//Delete from liquabaselog (This is an option step if you are switching between platforms)
+source db.sql (db.sql represents the database you want to import in this case the facility database)
+exit`
+
+### Restart tomact service by typing
+`sudo service tomcat9 restart`
+### Refresh browser then login to kenya EMR
+
+# Errors and fixes during installation
+## Fix 1
+### When you encounter 404 page in step 6, do the following...
+
+`sudo cp openmrs.war var/lib/tomcat9/webapps
+sudo chown tomcat:tomcat /var/lib/tomcat9/webapps/openmrs
+sudo chown tomcat:tomcat /var/lib/tomcat9/webapps/openmrs.war
+sudo service tomcat9 restart`
+
+# Fix 2
+## When you get etl table error when loggin in to KenyaEMR, do the following
+
+### open terminal and type sudo -i then press enter
+`cd /var/lib/mysql  and press enter
+sudo rm -rf kenyaemr_datatools and press enter 
+sudo rm -rf kenyaemr_etl and press enter
+login to mysql
+mysql -root -p
+enter mysql password
+use openmrs;
+call create_etl_tables();
+call sp_first_time_setup();
+sudo service tomcat9 restart`
+
+## Upgrading KenyaEMR
+### NB: Always upgrade step by step i.e 18.0.1 upgrade to 18.1.1 then to 18.1.2
+### NOTE: Never upgrade directly from 18.0.1 to 18.1.2
+
+# Upgrading KenyaEMR Version
+## Step 1
+### copy the upgrade folder to /home
+### navigate into the upgrade folder
+### run upgrade script i.e
+`sh setup_script.sh`
+
+# Error Fixes
+## Step 1
+### Check permisiion of OpenMRS folder
+`ll /var/lib/OpenMRS
+Modules folder
+ll /var/lib/OpenMRS/modules`
+
+### if not owned by tomcat, changed ownership 
+`sudo chown tomcat:tomcat /var/lib/OpenMRS/modules`
+
+### Change ownership of openmmrs war file
+`sudo chown tomcat:tomcat /var/lib/tomcat9/webapps/openmrs.war`
+
+### make all modules executable
+`sudo chmod +x /var/lib/OpenMRS/modules/*.omod`
+
+### make openmrs.war file executable
+`sudo chmod +x /var/lib/tomcat9/webapps/*.war`
+
+### Optionally you can delete openmrs folder in tomcat9 then restart service
+### Optionally you can drop openmrs database, grant privileges and source data again
+then restart tomcat
+
+## Adding KenyaEMR new modules
+### Copy the modules_update folder in home
+### open the folder in terminal
+### run modules script i.e
+`sh setup_script.sh`
+
+## Admin
+### go to browser and type localhost:8080/openmrs/ 
+
+## Run logs
+`tail -f /var/log/tomcat9/catalina.out`
+
+## ALTERNATIVE MANUAL CONFIG
+
 # 1.0 Configuration to run OpenMRS and KenyaEMR
 
 Installation of Tomcat9, Java8 and Mysql configuration on ubuntu 20.04
